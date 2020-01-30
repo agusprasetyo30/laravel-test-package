@@ -8,7 +8,7 @@
 <br>
 
 - Tabel Animate CSS
-<img src="animate.png">
+<img src="animate.png" style="text-align: center">
 
 ----------
 - Penempatan file JS Sweetalert
