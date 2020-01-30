@@ -8,6 +8,7 @@
    <title>Sweetalert & Modal</title>
    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
    <link rel="stylesheet" href="{{ asset('vendor/animatecss/animate.css') }}">
+   @stack('css')
    {{-- <link rel="stylesheet" href="{{ asset('vendor/sweetalert/css/sweetalert2.min.css') }}"> --}}
 </head>
 <body>
@@ -15,9 +16,10 @@
 
    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
    
+   {{-- Import manual, mengikusi data di package --}}
+   <script src="{{ asset('vendor/sweetalert/js/sweetalert.all.js')  }}"></script>
+   
    @include('sweetalert::alert')
-
-
    
    @stack('js')
 

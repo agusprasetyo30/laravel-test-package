@@ -50,9 +50,11 @@ class AlertController extends Controller
         }
 
         // Tampil tabel data
-        $data['tabel'] = Test::all();
+        $numberTest = numberPagination(6);
 
-        return view("alert.index", compact('data'));
+        $data['tabel'] = Test::paginate(6);
+
+        return view("alert.index", compact('data', 'numberTest'));
     }
 
     /**

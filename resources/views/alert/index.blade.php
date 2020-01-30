@@ -1,5 +1,18 @@
 @extends('alert.layouts.app')
 
+@push('css')
+   <style>
+      select {
+         cursor: pointer;
+      }
+
+      .pagination {
+         display: flex;
+         justify-content: center;
+      }
+   </style>
+@endpush
+
 @section('content')
 <div class="container mt-5 text-center " >
    <h2>Alert Test</h2>
@@ -54,19 +67,30 @@
                      @csrf
                      <div class="form-group">
                         <label for="nama">Nama</label>
-                        <input type="text" name="nama" id="nama" autofocus="on" class="form-control" value="{{ old('nama') }}" required>
+                        <input type="text" name="nama" id="nama" autofocus="on" autocomplete="off" placeholder="Masukan nama . . ." 
+                           class="form-control" value="{{ old('nama') }}" required>
                      </div>
                      <div class="form-group">
                         <label for="nim">NIM</label>
-                        <input type="text" name="nim" id="nim" autofocus="on" class="form-control" value="{{ old('nim') }}" required>
+                        <input type="text" name="nim" id="nim" autofocus="on" autocomplete="off" placeholder="Masukan NIM . . ." 
+                           class="form-control" value="{{ old('nim') }}" required>
                      </div>
                      <div class="form-group">
                         <label for="kelas">Kelas</label>
-                        <input type="text" name="kelas" id="kelas" autofocus="on" class="form-control" value="{{ old('kelas') }}" required>
+                        <select name="kelas" id="kelas" class="form-control">
+                           <option value="" disabled selected>Pilih Kelas</option>
+                           <option value="MI-3A">MI-3A</option>
+                           <option value="MI-3B">MI-3B</option>
+                           <option value="MI-3C">MI-3C</option>
+                           <option value="MI-3D">MI-3D</option>
+                           <option value="MI-3E">MI-3E</option>
+                           <option value="MI-3F">MI-3F</option>
+                        </select>
                      </div>
                      <div class="form-group">
                         <label for="alamat">Alamat</label>
-                        <textarea name="alamat" id="alamat" cols="30" rows="3" autofocus="on" class="form-control" required>{{ old('alamat') }}</textarea>
+                        <textarea name="alamat" id="alamat" cols="30" rows="3" autofocus="on" placeholder="Masukan Alamat . . ."
+                           class="form-control" required>{{ old('alamat') }}</textarea>
                      </div>
 
                      <div class="col-md-12 text-right">
@@ -91,12 +115,9 @@
                   </tr>
                </thead>
                <tbody>
-                  @php
-                     $nomer = 1;
-                  @endphp
                   @foreach ($data['tabel'] as $item)
                   <tr>
-                     <td class="align-middle">{{ $nomer++ }}. </td>
+                     <td class="align-middle">{{ $numberTest++ }}. </td>
                      <td class="align-middle">{{ $item->nama }}</td>
                      <td class="align-middle">{{ $item->nim }}</td>
                      <td class="align-middle text-center" style="width: 100px">{{ $item->kelas }}</td>
@@ -112,6 +133,16 @@
                   </tr>
                   @endforeach
                </tbody>
+               <tfoot >
+                  <tr >
+                     <td colspan="6" >
+                        <div class="justify-content-center">
+                           {{-- Pagination --}}
+                           {{ $data['tabel']->appends(Request::all())->links() }}
+                        </div>
+                     </td>
+                  </tr>
+               </tfoot>
             </table>
 
          </div>
