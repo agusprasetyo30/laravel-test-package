@@ -4,16 +4,31 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <title>Document</title>
+   <meta name="csrf-token" content="{{ csrf_token() }}">
+   <title>Sweetalert & Modal</title>
    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
    <link rel="stylesheet" href="{{ asset('vendor/animatecss/animate.css') }}">
+   {{-- <link rel="stylesheet" href="{{ asset('vendor/sweetalert/css/sweetalert2.min.css') }}"> --}}
 </head>
 <body>
    @yield('content')
 
-   {{-- <script src="{{ asset("js/app.js") }}"></script> --}}
+   <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
    
    @include('sweetalert::alert')
 
+
+   
+   @stack('js')
+
 </body>
+<footer>
+   <div class="col-md-12 bg-danger">
+      <div class="container">
+         <div class="pt-2 pb-2 text-white">
+            Test Footer
+         </div>
+      </div>
+   </div>
+</footer>
 </html>

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
+use App\Test;
+use Illuminate\Support\Facades\Validator;
+
 class AlertController extends Controller
 {
     public function index(Request $request)
@@ -42,18 +45,100 @@ class AlertController extends Controller
 
             case 'animate':
                 alert()->error("Judul", "Ini ditambahkan animate css")
-                    ->animation('pulse faster','fadeInUp faster');
+                    ->animation('rollIn faster','rollOut faster');
                 break;
-            
-            
         }
-        
-        return view("alert.index");
+
+        // Tampil tabel data
+        $data['tabel'] = Test::all();
+
+        return view("alert.index", compact('data'));
     }
 
-
-    public function questionAlert()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        Alert()->question('Title','Lorem Lorem Lorem');
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required|max:50',
+            'nim' => 'required|max:20',
+            'kelas' => 'required|max:10',
+            'alamat' => 'required|min:5'
+        ]);
+
+        if ($validator->fails()) {
+            // alert()->error('ini Error');
+
+            return back()
+                ->with('error', $validator->messages()->all()[0])
+                ->withInput();
+        }
+
+        $test = new Test;
+
+        $test->nama = $request->get('nama');
+        $test->nim = $request->get('nim');
+        $test->kelas = $request->get('kelas');
+        $test->alamat = $request->get('alamat');
+
+        $test->save();
+
+        return redirect()
+            ->route('alert.index')
+            ->with('success', 'Berhasil menyimpan data');
+
+        }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $test = Test::findOrFail($id);
+
+        $test->delete();
+        // return redirect()
+            // ->route('alert.index');
     }
 }

@@ -85,11 +85,9 @@
                 By : Agus Prasetyo
 
                 <div class="links" style="margin-top: 30px">
-                    <a href="{{ route('alert.index') }}">SweetAlert2</a>
+                    <a href="{{ route('alert.index') }}">SweetAlert2 + Modal</a>
                 </div>
             </div>
-            
-            @include('sweetalert::alert')
         </div>
     </body>
 </html>

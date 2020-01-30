@@ -13,10 +13,15 @@
 
 Route::get('/', function () {
     return view('welcome');
+})->name('home');
+
+Route::group(['prefix' => 'testalert'], function () {
+    Route::get('/', 'AlertController@index')->name('alert.index');
+    Route::post('/add', 'AlertController@store')->name('alert.add');
+    
+    Route::get('/{id}/delete', 'AlertController@destroy')->name('alert.destroy');
 });
 
-
-Route::get('testAlert', "AlertController@index")->name('alert.index');
 
 
 // Auth::routes();
