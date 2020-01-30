@@ -8,9 +8,9 @@
         Swal.fire({!! Session::pull('alert.config') !!});
     </script>
 
-@else
-    <link rel="stylesheet" href="{{ asset('vendor/sweetalert/css/sweetalert2.min.css') }}">
+{{-- @else --}}
+    {{-- <link rel="stylesheet" href="{{ asset('vendor/sweetalert/css/sweetalert2.min.css') }}"> --}}
 
-    <script src="{{ asset('vendor/sweetalert/js/sweetalert2.min.js') }}"></script>
+    {{-- <script src="{{ asset('vendor/sweetalert/js/sweetalert2.min.js') }}"></script> --}}
 
 @endif

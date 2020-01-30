@@ -133,8 +133,10 @@
          var dataUrl = '{{ route("alert.destroy", ":id") }}';
          dataUrl = dataUrl.replace(':id', id);
 
+         // Untuk Sweetalert ini dibuat default : sweetalert.all.js
+         // Bawaan package realrashid sweetalert laravel
          Swal.fire({
-            icon: 'warning',
+            icon: 'warning', // mengikuti package, biasanya secara default itu ' type '
             title: "Are you sure ?",
             text: "Once deleted, you will not be able to recover this imaginary file!",
             showCancelButton: true,
