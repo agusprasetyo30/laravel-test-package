@@ -86,6 +86,7 @@
 
                 <div class="links" style="margin-top: 30px">
                     <a href="{{ route('alert.index') }}">SweetAlert2 + Modal</a>
+                    <a href="{{ route('ajax.index') }}">Ajax CRUD</a>
                 </div>
             </div>
         </div>

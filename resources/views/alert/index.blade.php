@@ -124,7 +124,7 @@
                      <td class="align-middle">{{ $item->alamat }}</td>
                      <td class="align-middle">
                         <div class="btn-group">
-                           <a href="#" class="btn btn-warning btn-sm">Edit</a>
+                           <a href="javascript:void(0)" data-toggle="modal" data-target="#ajax-modal" data-id="{{ $item->id }}" class="btn btn-warning btn-sm">Edit</a>
                            <a>
                               <button class="btn btn-danger btn-sm" onclick="deleteData({{ $item->id }})" type="submit">Hapus</button>
                            </a>
@@ -149,16 +149,14 @@
       </div>
    </div>
 
+@include('alert.modals.update')
+
+
 @endsection
    
+
 @push('js')
-   <script>
-      $.ajaxSetup({
-         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         }
-      });
-      
+   <script type="text/javascript">
       function deleteData(id) {
          // Mengambil parameter
          var dataUrl = '{{ route("alert.destroy", ":id") }}';
@@ -203,6 +201,69 @@
             }
          });
       }
+
+$(document).ready(function() {  
+   
+      $('#ajax-modal').on('show.bs.modal', function (event) {
+         var button = $(event.relatedTarget)
+         var test_id = button.data('id')
+
+         console.log(test_id);
+         
+         var modal = $(this)
+         
+         // URL
+         var urlEdit = "{{ route('alert.edit', ':id') }}"
+         urlEdit = urlEdit.replace(':id', test_id);
+
+
+         $.get(urlEdit, function(data) {
+            modal.find('.modal-header #modalHeading').html('Edit Test Data');
+            modal.find('.modal-body #saveBtn').val('edit-data');
+            modal.find('.modal-body #saveBtn').text('Edit Data Test');
+            modal.find('.modal-body #test_id').val(data.id);
+
+            console.log(data);
+
+            modal.find('.modal-body #namaEdit').val(data.nama);
+            modal.find('.modal-body #nimEdit').val(data.nim);
+            modal.find('.modal-body #kelasEdit option[value=' + data.kelas + ']').attr('selected', 'selected');
+            modal.find('.modal-body #alamatEdit').val(data.alamat);
+         })
+      })
+
+      $('#saveBtn').click(function(e) {
+         $.ajaxSetup({
+            headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+         });
+         e.preventDefault();
+         $(this).html('Sending . . .')
+         // $(this).attr('disabled', 'disabled')
+         
+         console.log($('#productForm').serialize());
+
+         $.ajax({
+            data: $('#productForm').serialize(),
+            url: "{{ route('alert.update') }}",
+            type: 'POST',
+            // dataType: 'json',
+            success: function(data) {
+               $('#productForm').trigger("reset");
+               $('#ajax-modal').modal('hide');
+            },
+            
+            error: function (data) {
+               console.log('Error:', data);
+               $('#saveBtn').html('Save Changes');
+               // $(this).attr('disabled', '')
+            }
+         });
+
+      });
+   });
+
    </script>
 @endpush
 

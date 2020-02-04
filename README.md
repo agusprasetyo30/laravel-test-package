@@ -11,7 +11,7 @@
 <p align="center">
    <img src="animate.png">
 </p>
-----------
+
 - Penempatan file JS Sweetalert
 
 Untuk sweetalert yang digunakan adalah yang `sweetalert.all.js` yang mana itu adalah hasil dari package **SweetAlert For Laravel** dari *realrashid*

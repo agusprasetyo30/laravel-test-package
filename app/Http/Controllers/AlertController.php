@@ -57,6 +57,12 @@ class AlertController extends Controller
         return view("alert.index", compact('data', 'numberTest'));
     }
 
+    public function indexAjax()
+    {
+        $data = Test::all();
+        return response()->json($data);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -114,7 +120,9 @@ class AlertController extends Controller
      */
     public function edit($id)
     {
-        //
+        $test = Test::find($id);
+
+        return response()->json($test);
     }
 
     /**
@@ -124,9 +132,12 @@ class AlertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        // dd($request);
+        // echo "Awowo";
+
+        // return response()->json(['success' => 'Data test berhasil disimpan']);
     }
 
     /**
