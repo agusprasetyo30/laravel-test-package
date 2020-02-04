@@ -22,7 +22,7 @@
                </p>
             </div>
             <div class="modal-footer">
-               <input id="delete_task_id" name="task_id" type="hidden" value="0">
+               <input id="delete-task-id" name="delete-task-id" type="hidden" value="0">
                   <input class="btn btn-default" data-dismiss="modal" type="button" value="Cancel">
                      <button class="btn btn-danger" id="btn-delete" type="button">
                         Delete Task

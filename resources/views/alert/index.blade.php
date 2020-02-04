@@ -56,7 +56,6 @@
          <div class="col-md-4">
             
             <h4 class="text-center">Test Input</h4>
-
             <div class="card">
                <div class="card-header bg-primary text-white">
                   <h5 class="card-title text-left mb-0">Input Mahasiswa</h5>
@@ -102,7 +101,7 @@
          </div>
          <div class="col-md-8">
             <h4 class="text-center">Data Tabel</h4>
-
+            <a href="#" class="btn btn-success float-right mb-2" onclick="event.preventDefault(); showModalAdd()"><i class="fas fa-plus mr-2"></i>Tambah Data Modal</a>
             <table class="table table-bordered table-hover table-striped">
                <thead>
                   <tr class="text-center">
@@ -149,121 +148,127 @@
       </div>
    </div>
 
-@include('alert.modals.update')
-
+{{-- @include('alert.modals.update') --}}
+@include('alert.modals.modal')
 
 @endsection
    
 
 @push('js')
-   <script type="text/javascript">
-      function deleteData(id) {
-         // Mengambil parameter
-         var dataUrl = '{{ route("alert.destroy", ":id") }}';
-         dataUrl = dataUrl.replace(':id', id);
+<script type="text/javascript">
+   function deleteData(id) {
+      // Mengambil parameter
+      var dataUrl = '{{ route("alert.destroy", ":id") }}';
+      dataUrl = dataUrl.replace(':id', id);
 
-         // Untuk Sweetalert ini dibuat default : sweetalert.all.js
-         // Bawaan package realrashid sweetalert laravel
-         Swal.fire({
-            icon: 'warning', // mengikuti package, biasanya secara default itu ' type '
-            title: "Are you sure ?",
-            text: "Once deleted, you will not be able to recover this imaginary file!",
-            showCancelButton: true,
-            cancelButtonText: 'Batal',
-            confirmButtonText: 'Hapus data',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            confirmButtonColor: '#d0211c',
-            cancelButtonColor: '#38C172'
-         })
-         .then((result) => {
-            if (result.value) {
-               $.ajax({
-                  url: dataUrl,
-                  type: "GET",
-                  success: function () {
-                     Swal.fire({
-                        icon: 'success',
-                        text: 'Data berhasil dihapus'
-                     }).then(function(){
-                        location.reload();
-                     });
-                  },
-                  error: function () {
-                     Swal.fire({
-                        title: 'Oops ...',
-                        icon: 'error',
-                        text: 'something wrong . . .',
-                        timer: '1500',
-                     });
-                  },
-               })
-            }
-         });
-      }
-
-$(document).ready(function() {  
-   
-      $('#ajax-modal').on('show.bs.modal', function (event) {
-         var button = $(event.relatedTarget)
-         var test_id = button.data('id')
-
-         console.log(test_id);
-         
-         var modal = $(this)
-         
-         // URL
-         var urlEdit = "{{ route('alert.edit', ':id') }}"
-         urlEdit = urlEdit.replace(':id', test_id);
-
-
-         $.get(urlEdit, function(data) {
-            modal.find('.modal-header #modalHeading').html('Edit Test Data');
-            modal.find('.modal-body #saveBtn').val('edit-data');
-            modal.find('.modal-body #saveBtn').text('Edit Data Test');
-            modal.find('.modal-body #test_id').val(data.id);
-
-            console.log(data);
-
-            modal.find('.modal-body #namaEdit').val(data.nama);
-            modal.find('.modal-body #nimEdit').val(data.nim);
-            modal.find('.modal-body #kelasEdit option[value=' + data.kelas + ']').attr('selected', 'selected');
-            modal.find('.modal-body #alamatEdit').val(data.alamat);
-         })
+      // Untuk Sweetalert ini dibuat default : sweetalert.all.js
+      // Bawaan package realrashid sweetalert laravel
+      Swal.fire({
+         icon: 'warning', // mengikuti package, biasanya secara default itu ' type '
+         title: "Are you sure ?",
+         text: "Once deleted, you will not be able to recover this imaginary file!",
+         showCancelButton: true,
+         cancelButtonText: 'Batal',
+         confirmButtonText: 'Hapus data',
+         allowOutsideClick: false,
+         allowEscapeKey: false,
+         confirmButtonColor: '#d0211c',
+         cancelButtonColor: '#38C172'
       })
-
-      $('#saveBtn').click(function(e) {
-         $.ajaxSetup({
-            headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-         });
-         e.preventDefault();
-         $(this).html('Sending . . .')
-         // $(this).attr('disabled', 'disabled')
-         
-         console.log($('#productForm').serialize());
-
-         $.ajax({
-            data: $('#productForm').serialize(),
-            url: "{{ route('alert.update') }}",
-            type: 'POST',
-            // dataType: 'json',
-            success: function(data) {
-               $('#productForm').trigger("reset");
-               $('#ajax-modal').modal('hide');
-            },
-            
-            error: function (data) {
-               console.log('Error:', data);
-               $('#saveBtn').html('Save Changes');
-               // $(this).attr('disabled', '')
-            }
-         });
-
+      .then((result) => {
+         if (result.value) {
+            $.ajax({
+               url: dataUrl,
+               type: "GET",
+               success: function () {
+                  Swal.fire({
+                     icon: 'success',
+                     text: 'Data berhasil dihapus'
+                  }).then(function(){
+                     // window.location.reload();
+                     window.location.href = "{{ route('alert.index') }}"
+                  });
+               },
+               error: function () {
+                  Swal.fire({
+                     title: 'Oops ...',
+                     icon: 'error',
+                     text: 'something wrong . . .',
+                     timer: '1500',
+                  });
+               },
+            })
+         }
       });
-   });
+   }
 
-   </script>
+
+   function showModalAdd()
+   {
+      $(document).ready(function() {
+         $('.modal-header #modalHeading').html("Tambah data modal")
+         $('#modalAddData').modal('show')
+      })
+   }
+
+
+// $(document).ready(function() {  
+   
+//       $('#ajax-modal').on('show.bs.modal', function (event) {
+//          var button = $(event.relatedTarget)
+//          var test_id = button.data('id')
+
+//          var modal = $(this)
+         
+//          // URL
+//          var urlEdit = "{{ route('alert.edit', ':id') }}"
+//          urlEdit = urlEdit.replace(':id', test_id);
+
+
+//          $.get(urlEdit, function(data) {
+//             modal.find('.modal-header #modalHeading').html('Edit Test Data');
+//             modal.find('.modal-body #saveBtn').val('edit-data');
+//             modal.find('.modal-body #saveBtn').text('Edit Data Test');
+//             modal.find('.modal-body #test_id').val(data.id);
+
+//             modal.find('.modal-body #namaEdit').val(data.nama);
+//             modal.find('.modal-body #nimEdit').val(data.nim);
+//             modal.find('.modal-body #kelasEdit option[value=' + data.kelas + ']').attr('selected', 'selected');
+//             modal.find('.modal-body #alamatEdit').val(data.alamat);
+//          })
+//       })
+
+//       $('#saveBtn').click(function(e) {
+//          $.ajaxSetup({
+//             headers: {
+//                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//             }
+//          });
+
+//          e.preventDefault();
+         
+//          $(this).html('Sending . . .')
+         
+//          $.ajax({
+//             type: 'POST',
+//             url: "{{ route('alert.update') }}",
+//             data: ,
+//             dataType: 'json',
+//             success: function(data) {
+//                $('#productForm').trigger("reset");
+//                $('#ajax-modal').modal('hide');
+//             },
+            
+//             error: function (data) {
+//                console.log('Error:', data);
+//                $('#saveBtn').html('Save Changes');
+//                // $(this).attr('disabled', '')
+//             }
+//          });
+
+//       });
+//    });
+
+</script>
 @endpush
 

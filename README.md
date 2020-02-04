@@ -20,3 +20,5 @@ Untuk sweetalert yang digunakan adalah yang `sweetalert.all.js` yang mana itu ad
 <script src="{{ asset('vendor/sweetalert/js/sweetalert.all.js')  }}"></script>
 ```
 > Jadi untuk script nya di import ke main layout agar dapat di akses sweetalert yang di package dan sweetalert yang custom dibuat sendiri
+
+2. 

@@ -34,8 +34,6 @@ $(document).ready(function() {
 
    // Tombol edit ditekan
    $("#btn-edit").click(function() {
-
-
       $.ajaxSetup({
          headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -44,10 +42,10 @@ $(document).ready(function() {
 
       $.ajax({
          type: 'PUT',
-         url : "/ajaxTest/" + $("#frmEditTask input[name=edit-task-id]").val() ,
+         url : "/ajaxTest/" + $("#frmEditTask input[name=edit-task-id]").val() , // mengambil inputan ID
          data: {
-            task        : $("#frmEditTask input[name=edit-task]").val(),
-            description : $("#frmEditTask input[name=edit-description]").val()
+            task        : $("#frmEditTask input[name=edit-task]").val(), // mengambil inputan task
+            description : $("#frmEditTask input[name=edit-description]").val() // mengambil inputan description
          },
          dataType: 'json',
          success: function(data) {
@@ -65,10 +63,32 @@ $(document).ready(function() {
             $('#edit-error-bag').show();
          }
       })
-   })
+   });
+
+   // Tombol hapus ditekan
+   $('#btn-delete').click(function() {
+      $.ajaxSetup({
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+      });
+
+      $.ajax({
+         type: 'DELETE',
+         url: '/ajaxTest/' + $('#frmDeleteTask input[name=delete-task-id]').val(),
+         dataType: 'json',
+         success: function(data) {
+            $('#frmDeleteTask .close').click(); // keadaan jika sukses maka secara otomatis akan memanggil class '.close'
+            window.location.reload();
+         },
+         error: function(data) {
+            console.log(data);
+         }
+      });
+   });
 });
 
-// menampilkan form tambah
+// menampilkan form modal tambah
 function addTaskForm() 
 {
    $(document).ready(function() {
@@ -77,6 +97,7 @@ function addTaskForm()
    });
 }
 
+// menampilkan form modal edit
 function editTaskForm(id_task)
 {
    $.ajax({
@@ -92,5 +113,24 @@ function editTaskForm(id_task)
       error: function(data) {
          console.log(data);
       }
-   })
+   });
+}
+
+// menampilkan form modal delete
+function deleteTaskForm(task_id)
+{
+   console.log(task_id);
+   $.ajax({
+      type : 'GET',
+      url : '/ajaxTest/' + task_id,
+      success: function(data) { // data : akan mereturn respon yang dikirim oleh controller
+         console.log(data);
+         $("#frmDeleteTask #delete-title").html("Delete Task ( " + data.data.task + " )?");
+         $("#frmDeleteTask input[name=delete-task-id]").val(data.data.id);
+         $("#deleteTaskModal").modal("show");
+      },
+      error: function(data) {
+         console.log(data);
+      } 
+   });
 }

@@ -134,9 +134,6 @@ class AlertController extends Controller
      */
     public function update(Request $request)
     {
-        // dd($request);
-        // echo "Awowo";
-
         // return response()->json(['success' => 'Data test berhasil disimpan']);
     }
 
@@ -151,7 +148,10 @@ class AlertController extends Controller
         $test = Test::findOrFail($id);
 
         $test->delete();
-        // return redirect()
-            // ->route('alert.index');
+
+        return response()->json([
+            'error' => false,
+            'data'  => $test
+        ], 200);
     }
 }
