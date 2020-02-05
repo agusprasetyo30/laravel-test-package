@@ -10,4 +10,6 @@ class Test extends Model
     use SoftDeletes;
 
     protected $table = "tests";
+
+    protected $fillable = ['nama', 'nim', 'kelas', 'alamat'];
 }

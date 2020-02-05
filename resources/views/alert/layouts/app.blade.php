@@ -16,6 +16,7 @@
 <body>
    @yield('content')
 
+   @include('alert.modals.modal')
    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
    <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
    <script src="{{ asset('vendor/popperjs/popper.min.js')  }}"></script>

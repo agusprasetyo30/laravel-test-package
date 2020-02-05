@@ -50,9 +50,24 @@ class AlertController extends Controller
         }
 
         // Tampil tabel data
-        $numberTest = numberPagination(6);
+        $numberTest = numberPagination(5);
 
-        $data['tabel'] = Test::paginate(6);
+        switch ($request->type) {
+            case 'delete':
+                $data['tabel'] = Test::onlyTrashed()->paginate(5);
+                break;
+            
+            case 'all-delete':
+                $data['tabel'] = Test::withTrashed()->paginate(5);
+                break;
+
+            default:
+                $data['tabel'] = Test::paginate(5);
+                break;
+        }
+
+
+        // dd(Test::onlyTrashed()->get());
 
         return view("alert.index", compact('data', 'numberTest'));
     }
@@ -79,8 +94,6 @@ class AlertController extends Controller
         ]);
 
         if ($validator->fails()) {
-            // alert()->error('ini Error');
-
             return back()
                 ->with('error', $validator->messages()->all()[0])
                 ->withInput();
@@ -98,8 +111,41 @@ class AlertController extends Controller
         return redirect()
             ->route('alert.index')
             ->with('success', 'Berhasil menyimpan data');
+    }
 
+
+    public function storeAjax(Request $request)
+    {
+        $validator = Validator::make($request->input(), array(
+            'dataName'  => 'required',
+            'dataNim'  => 'required',
+            'dataClass'  => 'required',
+            'dataAddress'  => 'required',
+        ));
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error'  => true,
+                'messages'=> $validator->errors(),
+            ], 422);
         }
+
+        $test = new Test;
+        // $test = Test::create($request->all());
+
+        $test->nama = $request->get('dataName');
+        $test->nim = $request->get('dataNim');
+        $test->kelas = $request->get('dataClass');
+        $test->alamat = $request->get('dataAddress');
+
+        $test->save();
+
+        return response()->json([
+            'error'   => false,
+            'data'    => $test
+        ], 200);
+    }
+    
 
     /**
      * Display the specified resource.
@@ -112,17 +158,15 @@ class AlertController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function showAjax($id)
     {
-        $test = Test::find($id);
+        $data = Test::find($id);
 
-        return response()->json($test);
+        return response()->json([
+            'error' => false,
+            'data'  => $data,
+
+        ], 200);
     }
 
     /**
@@ -132,9 +176,35 @@ class AlertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        // return response()->json(['success' => 'Data test berhasil disimpan']);
+        $validator = Validator::make($request->input(), array(
+            'dataName'  => 'required',
+            'dataNim'  => 'required',
+            'dataClass'  => 'required',
+            'dataAddress'  => 'required',
+        ));
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error'   => true,
+                'messages'=> $validator->errors()
+            ], 422);
+        }
+
+        $data = Test::findOrFail($id);
+
+        $data->nama = $request->input('dataName');
+        $data->nim = $request->input('dataNim');
+        $data->kelas = $request->input('dataClass');
+        $data->alamat = $request->input('dataAddress');
+
+        $data->save();
+
+        return response()->json([
+            'error' => false,
+            'data'  => $data
+        ], 200);
     }
 
     /**

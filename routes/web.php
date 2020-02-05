@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Route::get('/ajax', 'AlertController@indexAjax')->name('alert.ajax');
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,12 +17,13 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'testalert'], function () {
     Route::get('/', 'AlertController@index')->name('alert.index');
+    Route::get('/{id}', 'AlertController@showAjax')->name('alert.showAjax');
+    
     Route::post('/add', 'AlertController@store')->name('alert.add');
-    
-    Route::get('/{id}/edit', 'AlertController@edit')->name('alert.edit');
-    Route::post('/update', 'AlertController@update')->name('alert.update');
-    
-    Route::get('/{id}/delete', 'AlertController@destroy')->name('alert.destroy');
+    Route::post('/addAjax', 'AlertController@storeAjax')->name('alert.storeAjax');
+
+    Route::put('/{id}', 'AlertController@update')->name('alert.update');
+    Route::delete('/{id}', 'AlertController@destroy')->name('alert.destroy');
 });
 
 
