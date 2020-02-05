@@ -146,9 +146,9 @@
                            <td class="align-middle">{{ $item->alamat }}</td>
                            <td class="align-middle text-center">
                               <div class="btn-group-vertical">
-                                 <a href="#" class="btn btn-success btn-sm">Restore</a>
-                                 <a>
-                                    <button class="btn btn-danger btn-sm">Force Del</button>
+                                 <a href="{{ route('alert.restore', ['id', $item->alamat]) }}" class="btn btn-success btn-sm">Restore</a>
+                                 <a href="#" class="btn btn-danger btn-sm" onclick="event.preventDefault(); permanentDelete({{ $item->id }})">
+                                    Force Del
                                  </a>
                               </div>
                            </td>
@@ -163,9 +163,9 @@
                            @if ($item->trashed())
                               <td class="align-middle text-center">
                                  <div class="btn-group-vertical">
-                                    <a href="#" class="btn btn-success btn-sm">Restore</a>
-                                    <a>
-                                       <button class="btn btn-danger btn-sm">Force Del</button>
+                                    <a href="{{ route('alert.restore', ['id' => $item->id]) }}" class="btn btn-success btn-sm">Restore</a>
+                                    <a href="#" class="btn btn-danger btn-sm" onclick="event.preventDefault(); permanentDelete({{ $item->id }})">
+                                       Force Del
                                     </a>
                                  </div>
                               </td>
@@ -209,6 +209,8 @@
       // Tombol tambah ditekan
       $('#addBtn').click(function(e) 
       {
+         $(this).html('Sending . . .')
+
          $.ajaxSetup({
             headers: {
                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -337,6 +339,55 @@
    }
 
 
+   function permanentDelete(id)
+   {
+      $.ajaxSetup({
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+      });
+
+      Swal.fire({
+         icon: 'warning', // mengikuti package, biasanya secara default itu ' type '
+         title: "Peringatan!",
+         text: "Apakah anda yakin ingin menghapus permanent data ini ?",
+         showCancelButton: true,
+         cancelButtonText: 'Batal',
+         confirmButtonText: 'Hapus data',
+         allowOutsideClick: false,
+         allowEscapeKey: false,
+         confirmButtonColor: '#d0211c',
+         cancelButtonColor: '#38C172'
+      }).then((result) => {
+         if (result.value) {
+            $.ajax({
+               type: 'GET',
+               url: '/testalert/' + id + '/delete',
+               dataType: 'json',
+               success: function () {
+                  Swal.fire({
+                     icon: 'success',
+                     text: 'Data berhasil dihapus permanen',
+                     allowOutsideClick: false,
+                     allowEscapeKey: false
+                  }).then(function(){
+                     window.location.href = "{{ route('alert.index', ['type' => 'delete']) }}"
+                  });
+               },
+               error: function () {
+                  Swal.fire({
+                     title: 'Oops ...',
+                     icon: 'error',
+                     text: 'something wrong . . .',
+                     timer: '1500',
+                  });
+               },
+            })
+         }
+      })
+   }
+
+
    function showModalAdd()
    {
       $(document).ready(function() {
@@ -381,64 +432,7 @@
    $('#close').click(function() {
       console.log("tombol close ditekan");
       $("#frmAddData").trigger("reset");
-   })
-
-// $(document).ready(function() {  
-   
-//       $('#ajax-modal').on('show.bs.modal', function (event) {
-//          var button = $(event.relatedTarget)
-//          var test_id = button.data('id')
-
-//          var modal = $(this)
-         
-//          // URL
-//          var urlEdit = ""
-//          urlEdit = urlEdit.replace(':id', test_id);
-
-
-//          $.get(urlEdit, function(data) {
-//             modal.find('.modal-header #modalHeading').html('Edit Test Data');
-//             modal.find('.modal-body #saveBtn').val('edit-data');
-//             modal.find('.modal-body #saveBtn').text('Edit Data Test');
-//             modal.find('.modal-body #test_id').val(data.id);
-
-//             modal.find('.modal-body #namaEdit').val(data.nama);
-//             modal.find('.modal-body #nimEdit').val(data.nim);
-//             modal.find('.modal-body #kelasEdit option[value=' + data.kelas + ']').attr('selected', 'selected');
-//             modal.find('.modal-body #alamatEdit').val(data.alamat);
-//          })
-//       })
-
-//       $('#saveBtn').click(function(e) {
-//          $.ajaxSetup({
-//             headers: {
-//                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//             }
-//          });
-
-//          e.preventDefault();
-         
-//          $(this).html('Sending . . .')
-         
-//          $.ajax({
-//             type: 'POST',
-//             url: "",
-//             data: ,
-//             dataType: 'json',
-//             success: function(data) {
-//                $('#productForm').trigger("reset");
-//                $('#ajax-modal').modal('hide');
-//             },
-            
-//             error: function (data) {
-//                console.log('Error:', data);
-//                $('#saveBtn').html('Save Changes');
-//                // $(this).attr('disabled', '')
-//             }
-//          });
-
-//       });
-//    });
+   });
 
 </script>
 @endpush

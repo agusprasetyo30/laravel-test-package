@@ -10,8 +10,15 @@ use Illuminate\Support\Facades\Validator;
 
 class AlertController extends Controller
 {
+    /**
+     * index data
+     *
+     * @param Request $request
+     * @return void
+     */
     public function index(Request $request)
     {
+        // mengambil data get alert
         switch ($request->alert) {
             case 'success':
                 Alert::success('Title','Lorem Lorem Lorem')->persistent(true,true);
@@ -52,6 +59,7 @@ class AlertController extends Controller
         // Tampil tabel data
         $numberTest = numberPagination(5);
 
+        // mengambil data get type
         switch ($request->type) {
             case 'delete':
                 $data['tabel'] = Test::onlyTrashed()->paginate(5);
@@ -66,23 +74,14 @@ class AlertController extends Controller
                 break;
         }
 
-
-        // dd(Test::onlyTrashed()->get());
-
         return view("alert.index", compact('data', 'numberTest'));
     }
 
-    public function indexAjax()
-    {
-        $data = Test::all();
-        return response()->json($data);
-    }
 
     /**
-     * Store a newly created resource in storage.
+     * menambahkan data pada form awal
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -114,6 +113,12 @@ class AlertController extends Controller
     }
 
 
+    /**
+     * Menambahkan data test menggunakan ajax
+     *
+     * @param Request $request
+     * @return void
+     */
     public function storeAjax(Request $request)
     {
         $validator = Validator::make($request->input(), array(
@@ -148,16 +153,11 @@ class AlertController extends Controller
     
 
     /**
-     * Display the specified resource.
+     * Menampilkan data test berdasarkan ID
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return void
      */
-    public function show($id)
-    {
-        //
-    }
-
     public function showAjax($id)
     {
         $data = Test::find($id);
@@ -170,7 +170,7 @@ class AlertController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update data update menggunakan AJAX
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -208,7 +208,7 @@ class AlertController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data test
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -223,5 +223,32 @@ class AlertController extends Controller
             'error' => false,
             'data'  => $test
         ], 200);
+    }
+
+
+    public function restoreData($id)
+    {
+        $data = Test::onlyTrashed()->where('id', $id)->get()[0];
+
+        $data->restore();
+
+        Alert::success('Berhasil', $data['nama'] . ' Berhasil di restore')->persistent(true,true);
+
+        return redirect()
+            ->route('alert.index');
+    }
+
+
+    public function permanentDelete($id)
+    {
+        $data = Test::onlyTrashed()->where('id', $id)->get()[0];
+
+        $data->forceDelete();
+
+        return response()
+            ->json([
+                'error' => false,
+                'data' => $data
+            ], 200);
     }
 }

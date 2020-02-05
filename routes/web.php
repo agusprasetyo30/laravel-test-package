@@ -18,6 +18,8 @@ Route::get('/', function () {
 Route::group(['prefix' => 'testalert'], function () {
     Route::get('/', 'AlertController@index')->name('alert.index');
     Route::get('/{id}', 'AlertController@showAjax')->name('alert.showAjax');
+    Route::get('/{id}/restore', 'AlertController@restoreData')->name('alert.restore');
+    Route::get('/{id}/delete', 'AlertController@permanentDelete')->name('alert.deletePermanent');
     
     Route::post('/add', 'AlertController@store')->name('alert.add');
     Route::post('/addAjax', 'AlertController@storeAjax')->name('alert.storeAjax');
@@ -25,7 +27,6 @@ Route::group(['prefix' => 'testalert'], function () {
     Route::put('/{id}', 'AlertController@update')->name('alert.update');
     Route::delete('/{id}', 'AlertController@destroy')->name('alert.destroy');
 });
-
 
 Route::group(['prefix' => 'ajaxTest'], function () {
     Route::get('/', 'AjaxTestController@index')->name('ajax.index');
