@@ -85,8 +85,8 @@
                 By : Agus Prasetyo
 
                 <div class="links" style="margin-top: 30px">
-                    <a href="{{ route('alert.index') }}">SweetAlert2 + Modal</a>
-                    <a href="{{ route('ajax.index') }}">Ajax CRUD + Modal</a>
+                    <a href="{{ route('alert.index') }}">SweetAlert2 + AJAX + Modal</a>
+                    <a href="{{ route('ajax.index') }}">AJAX CRUD + Modal</a>
                 </div>
             </div>
         </div>

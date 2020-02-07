@@ -25,7 +25,7 @@
 
 @section('content')
 <div class="container mt-5 text-center " >
-   <h2>Alert Test</h2>
+   <h2>SweetAlert2 + AJAX + Modal Test</h2>
    <a href="{{ route('home') }}" class="btn btn-primary mb-2">
       Kembali
    </a>
@@ -65,7 +65,7 @@
       <div class="row justify-content-center">
          <div class="col-md-4">
             
-            <h4 class="text-center">Test Input</h4>
+            <h4 class="text-center mb-4">Test Input</h4>
             <div class="card">
                <div class="card-header bg-primary text-white">
                   <h5 class="card-title text-left mb-0">Input Mahasiswa</h5>
@@ -110,7 +110,7 @@
             </div>
          </div>
          <div class="col-md-8">
-            <h4 class="text-center">Data Tabel</h4>
+            <h4 class="text-center mb-4">Data Tabel</h4>
             <a href="#" class="btn btn-success float-right mb-2" onclick="event.preventDefault(); showModalAdd()"><i class="fas fa-plus mr-2"></i>Tambah Data Modal</a>
             <ul class="nav ">
                <li class="nav-item">
