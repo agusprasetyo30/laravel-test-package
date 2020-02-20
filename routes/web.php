@@ -37,5 +37,4 @@ Route::group(['prefix' => 'ajaxTest'], function () {
 });
 
 
-
-// Auth::routes();
+Auth::routes();

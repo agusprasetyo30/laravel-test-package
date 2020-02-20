@@ -67,7 +67,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ route('alert.index') }}">Home</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
 
@@ -85,7 +85,7 @@
                 By : Agus Prasetyo
 
                 <div class="links" style="margin-top: 30px">
-                    <a href="{{ route('alert.index') }}">SweetAlert2 + AJAX + Modal</a>
+                    <a href="{{ route('alert.index') }}">SweetAlert2 + AJAX + Modal + Notifikasi</a>
                     <a href="{{ route('ajax.index') }}">AJAX CRUD + Modal</a>
                 </div>
             </div>
